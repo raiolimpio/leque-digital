@@ -38,16 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let j = 1; j <= 3; j++) {
             const hotspot = document.createElement('a');
             hotspot.className = 'hotspot';
-            hotspot.style.top = `${20 + (j * 15)}%`; // Posições de exemplo
-            hotspot.style.left = `${40 + (j*5)}%`;
+            hotspot.style.top = `${20 + (j * 15)}%`;
+            hotspot.style.left = `${40 + (j * 5)}%`;
             
-            const productData = {
-                name: `Produto ${j} da Lâmina ${i}`,
-                description: `Aqui vai a descrição completa deste produto incrível.`
-            };
+            const productData = { name: `Produto ${j} da Lâmina ${i}`, description: `Descrição do produto.` };
 
             hotspot.addEventListener('click', (e) => {
-                e.stopPropagation(); // Impede o leque de girar ao clicar no hotspot
+                e.stopPropagation();
                 openPopup(productData);
             });
             petala.appendChild(hotspot);
@@ -56,30 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(petala);
         petalas.push(petala);
     }
-    petalas.reverse();
-
-    // Lógica do leque... (idêntica à anterior)
-    const angleSpread = 8;
-    function renderState() { /* ... */ }
-    function changePetala(direction) { /* ... */ }
     
-    // ... Todos os event listeners de swipe e teclado ...
-    // (O código abaixo é o mesmo da versão anterior para controle do leque)
-
-    let interactionMade = false;
     const indicator = document.getElementById('swipe-indicator');
+    let interactionMade = false;
     
+    const baseAngle = -15;
+    const angleSpread = 8;
+
     function renderState() {
         petalas.forEach((petala, index) => {
-            const relativeIndex = index - currentIndex;
-            const angle = (relativeIndex * angleSpread);
-            
             if (index < currentIndex) {
-                petala.style.transform = `rotate(${angleSpread * (index - currentIndex)}deg)`;
+                const angle = baseAngle - (index * angleSpread);
+                petala.style.transform = `rotate(${angle}deg)`;
+                petala.style.zIndex = index;
             } else {
-                petala.style.transform = `rotate(0deg)`;
+                const slightRotation = (index - currentIndex) * 0.5;
+                petala.style.transform = `rotate(${slightRotation}deg)`;
+                petala.style.zIndex = totalPetalas - (index - currentIndex);
             }
-            petala.style.zIndex = totalPetalas - index;
         });
     }
 
@@ -92,10 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let startX = 0;
-    const handleStart = e => startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    // --- Controles ---
+    let startY = 0;
+    const handleStart = e => startY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
     const handleEnd = e => {
-        const diff = (e.type === 'touchend' ? e.changedTouches[0].clientX : e.clientX) - startX;
+        const diff = (e.type === 'touchend' ? e.changedTouches[0].clientY : e.clientY) - startY;
         if (diff < -50) changePetala('next');
         else if (diff > 50) changePetala('prev');
     };
@@ -104,9 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
     container.addEventListener('mouseup', handleEnd);
     container.addEventListener('touchstart', handleStart);
     container.addEventListener('touchend', handleEnd);
+
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') changePetala('next');
-        else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') changePetala('prev');
+        if (e.key === 'ArrowUp' || e.key === 'ArrowRight') changePetala('next');
+        else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') changePetala('prev');
     });
 
     renderState();
