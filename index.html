@@ -8,13 +8,31 @@
 </head>
 <body>
 
-    <div id="swipe-indicator">
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M18 11l-6-6M6 11l6-6"/></svg>
-        <p style="font-size: 0.8rem; margin-top: 5px;">Deslize para cima</p>
+    <!-- Aviso de Orientação para Mobile -->
+    <div id="orientation-warning">
+        <p>Vire seu dispositivo para uma melhor experiência.</p>
     </div>
 
+    <!-- Indicador de Swipe -->
+    <div id="swipe-indicator">
+        <p style="font-size: 0.8rem;">Deslize para o lado</p>
+    </div>
+
+    <!-- Container Principal do Leque -->
     <div id="leque-container">
         <!-- As pétalas serão geradas via JS -->
+    </div>
+
+    <!-- Popup/Modal de Detalhe do Produto -->
+    <div id="popup-overlay" class="popup-overlay">
+        <div id="popup-modal" class="popup-modal">
+            <button id="popup-close">&times;</button>
+            <div id="popup-content">
+                <!-- Conteúdo do produto será injetado aqui -->
+                <h3 id="popup-title">Nome do Produto</h3>
+                <p id="popup-desc">Descrição detalhada do produto.</p>
+            </div>
+        </div>
     </div>
 
     <script src="assets/js/script.js"></script>
