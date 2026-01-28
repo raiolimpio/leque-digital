@@ -34,12 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = `assets/imagens/${i}.png`;
         petala.appendChild(img);
 
-        // Adicionar hotspots de exemplo (você precisa ajustar posições e dados)
+        const hotspotContainer = document.createElement('div');
+        hotspotContainer.className = 'hotspot-container';
+
+        // Adicionar hotspots de exemplo
         for (let j = 1; j <= 3; j++) {
             const hotspot = document.createElement('a');
             hotspot.className = 'hotspot';
-            hotspot.style.top = `${20 + (j * 15)}%`;
-            hotspot.style.left = `${40 + (j * 5)}%`;
             
             const productData = { name: `Produto ${j} da Lâmina ${i}`, description: `Descrição do produto.` };
 
@@ -47,8 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 openPopup(productData);
             });
-            petala.appendChild(hotspot);
+            hotspotContainer.appendChild(hotspot);
         }
+        petala.appendChild(hotspotContainer);
 
         container.appendChild(petala);
         petalas.push(petala);
